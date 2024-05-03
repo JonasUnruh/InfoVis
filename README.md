@@ -1,7 +1,7 @@
-#InfoVis UE - Exercise 2: Linked View with d3
+# InfoVis UE - Exercise 2: Linked View with d3
 Scaffold for building multiple coordinated views using d3 with a Python backend using Flask.
 
-##Project setup using PyCharm:
+## Project setup using PyCharm:
 
 
 1. Create new PyCharm project from this folder
@@ -26,7 +26,7 @@ To do that, open Run
 set your Working Directory to the root directory (i.e. where "app.py" and the "static" folder are located)
 
 
-##Files:
+## Files:
 
 * app.py: Flask server
 * templates/index.html: our single HTML page, including the main JavaScript code
