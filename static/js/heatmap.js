@@ -1,4 +1,4 @@
-var margin = ({top: 30, right: 30, bottom: 30, left: 30});
+var margin = ({top: 30, right: 30, bottom: 60, left: 150});
 var width = 600;
 var height = 400;
 
@@ -14,19 +14,25 @@ var groups = d3.map(data[1], d => d["Team Name"]);
 var vars = d3.map(data[1], d => d.vars);
 
 var x = d3.scaleBand()
-    .range([ 0, width ])
+    .range([ margin.left, width - margin.right ])
     .domain(groups)
     .padding(0.01);
 svg.append("g")
-    .attr("transform", `translate(0, ${height})`)
-    .call(d3.axisBottom(x));
+    .attr("transform", `translate(0, ${height - margin.bottom})`)
+    .call(d3.axisBottom(x))
+    .selectAll("text")  
+    .style("text-anchor", "end")
+    .attr("dx", "-.8em")
+    .attr("dy", ".15em")
+    .attr("transform", "rotate(-65)");
 
 
 var y = d3.scaleBand()
-    .range([ height, 0 ])
+    .range([ height - margin.bottom, margin.top ])
     .domain(vars)
     .padding(0.01);
 svg.append("g")
+    .attr("transform", `translate(${margin.left}, 0)`)
     .call(d3.axisLeft(y));
 
 var color = d3.scaleSequential()
