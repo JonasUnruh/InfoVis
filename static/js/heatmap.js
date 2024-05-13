@@ -151,13 +151,13 @@ svg.append('rect')
 
 document.addEventListener("scatterplotHovered", (event) => {
     var hoveredData = event.detail;
-
-    svg.select("#highlightHeatmap")
+    
+    svg.select("#highlightHeatmapX")
         .attr("x", x(hoveredData))
         .attr("opacity", 1)
 });
 
 document.addEventListener("noHover", (event) => {
-    svg.select("#highlightHeatmap")
+    svg.select("#highlightHeatmapX")
         .attr("opacity", 0)
 });

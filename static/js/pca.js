@@ -48,7 +48,7 @@ svg.append('g')
         document.dispatchEvent(customEvent);
     })
     .on("click", (event, d) => {
-        
+
     });
 
 var highlight = svg.append('circle')
