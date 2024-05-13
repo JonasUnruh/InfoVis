@@ -2,7 +2,7 @@ var margin = ({top: 20, right: 20, bottom: 20, left: 20});
 var width = 600;
 var height = 400;
 
-var svg = d3.select("#svg_chart")
+var svgPCA = d3.select("#svg_chart")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
     .append("g")
@@ -16,11 +16,11 @@ var yScale = d3.scaleLinear()
     .domain([d3.min(data[0], d => d.X2), d3.max(data[0], d => d.X2)]).nice()
     .range([ height - margin.bottom, margin.top ]);
 
-svg.append("g")
+svgPCA.append("g")
     .attr("transform", `translate(0, ${height - margin.bottom})`)
     .call(d3.axisBottom(xScale));
 
-svg.append("g")
+svgPCA.append("g")
     .attr("transform", `translate(${margin.left}, 0)`)
     .call(d3.axisLeft(yScale));
 
@@ -29,7 +29,7 @@ var color = d3.scaleSequential()
     .domain([0, d3.max(data[0], d => d["Team ID"])])
     .interpolator(d3.interpolateViridis);
 
-svg.append('g')
+svgPCA.append('g')
     .selectAll("dot")
     .data(data[0])
     .enter()
@@ -51,7 +51,7 @@ svg.append('g')
 
     });
 
-var highlight = svg.append('circle')
+var highlight = svgPCA.append('circle')
                     .attr("id", "highlightScatter")
                     .attr("cx", xScale(0) )
                     .attr("cy", yScale(0) )
@@ -63,7 +63,7 @@ var highlight = svg.append('circle')
 
 document.addEventListener("heatmapHovered", (event) => {
     var hoveredData = event.detail;
-
+    
     highlight
         .attr("cx", xScale(hoveredData[0]))
         .attr("cy", yScale(hoveredData[1]))

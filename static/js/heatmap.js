@@ -65,23 +65,23 @@ svg.selectAll()
         var customEvent = new CustomEvent("heatmapHovered", { detail: [returnData.X1, returnData.X2] });
         document.dispatchEvent(customEvent);
 
-        d3.select("#highlightHeatmapX")
+        highlightHeatmapX
             .attr("x", x(d1["Team Name"]))
-            .style("opacity", 1);
+            .attr("opacity", 1);
 
-        d3.select("#highlightHeatmapY")
+        highlightHeatmapY
             .attr("y", y(d1.vars))
-            .style("opacity", 1);
+            .attr("opacity", 1);
     })
     .on("mouseout", (event, d) => {
         var customEvent = new CustomEvent("noScatterHover");
         document.dispatchEvent(customEvent);
 
-        d3.select("#highlightHeatmapX")
-            .style("opacity", 0);
+        highlightHeatmapX
+            .attr("opacity", 0);
 
-        d3.select("#highlightHeatmapY")
-            .style("opacity", 0);
+        highlightHeatmapY
+            .attr("opacity", 0);
     });
 
 heatmapTeams.data(data[1])
@@ -90,38 +90,31 @@ heatmapTeams.data(data[1])
         var customEvent = new CustomEvent("heatmapHovered", { detail: [returnData.X1, returnData.X2] });
         document.dispatchEvent(customEvent);
 
-        d3.select("#highlightHeatmapX")
+        highlightHeatmapX
             .attr("x", x(d1["Team Name"]))
-            .style("opacity", 1);
+            .attr("opacity", 1);
     })
     .on("mouseout", (event, d) => {
         var customEvent = new CustomEvent("noScatterHover");
         document.dispatchEvent(customEvent);
 
-        d3.select("#highlightHeatmapX")
-            .style("opacity", 0);
+        highlightHeatmapX
+            .attr("opacity", 0);
     });
 
 
 heatmapVars.data(data[1])
     .on("mouseover", (event, d) => {
-        /*returnData = data[0]
-        var customEvent = new CustomEvent("heatmapHovered", { detail: [returnData.X1, returnData.X2] });
-        document.dispatchEvent(customEvent);*/
-
-        d3.select("#highlightHeatmapY")
+        highlightHeatmapY
             .attr("y", y(vars[d["Team ID"] - 1]))
-            .style("opacity", 1);
+            .attr("opacity", 1);
     })
     .on("mouseout", (event, d) => {
-        var customEvent = new CustomEvent("noScatterHover");
-        document.dispatchEvent(customEvent);
-
-        d3.select("#highlightHeatmapY")
-            .style("opacity", 0);
+        highlightHeatmapY
+            .attr("opacity", 0);
     });
 
-svg.append('rect')
+var highlightHeatmapX = svg.append('rect')
     .attr("id", "highlightHeatmapX")
     .attr("width", x.bandwidth())
     .attr("height", height - margin.top - margin.bottom)
@@ -135,7 +128,7 @@ svg.append('rect')
     .attr("stroke", 'red')
     .attr("stroke-width", 2);
 
-svg.append('rect')
+var highlightHeatmapY = svg.append('rect')
     .attr("id", "highlightHeatmapY")
     .attr("width", width - margin.left - margin.right)
     .attr("height", y.bandwidth())
@@ -151,13 +144,13 @@ svg.append('rect')
 
 document.addEventListener("scatterplotHovered", (event) => {
     var hoveredData = event.detail;
-    
-    svg.select("#highlightHeatmapX")
+
+    highlightHeatmapX
         .attr("x", x(hoveredData))
         .attr("opacity", 1)
 });
 
 document.addEventListener("noHover", (event) => {
-    svg.select("#highlightHeatmapX")
+    highlightHeatmapX
         .attr("opacity", 0)
 });
