@@ -49,8 +49,16 @@ def data():
     heatmap_df = pd.melt(intermediate_df[1:], id_vars = target_cols, var_name = "vars", value_name = "values")
     heatmap_json = json.loads(heatmap_df.to_json(orient = "records"))
 
+    # create line chart data
+    # aggregate data by team and year
+    targets = ["season", "team_name", "fg", "fga", "fgp", "fg3", "fg3a", "fg3p", "fg2", "fg2a", "fg2p", "ft", "fta", "ftp", 
+               "orb", "drb", "trb", "ast", "stl", "blk", "tov", "pf", "pts"]
+    aggregate_df = cleaned_df_player_stats[cleaned_df_player_stats["team_name"] != "retired"][targets].groupby(["season", "team_name"]).mean()
+
+    aggregate_json = json.loads(aggregate_df.reset_index(names = ["season", "team_name"]).to_json(orient = "records"))
+
     # replace this with the real data
-    data = [pca_json, heatmap_json]
+    data = [pca_json, heatmap_json, aggregate_json]
 
     # return the index file and the data
     return render_template("index.html", data=json.dumps(data))
