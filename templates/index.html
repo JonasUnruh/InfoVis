@@ -20,22 +20,20 @@
 <div id="main_container" class="main_container">
     <div class="container">
     <svg id="svg_table"></svg>
-        
         <p>&nbsp;</p>
-        <div id="svg_heatmap"></div>
         <label>Indicator:</label>
         <select id="indicator_change" class="dropdown" onchange="changeIndicator(this)"></select>
     </div>
     <div class="container">
         <p>&nbsp;</p>
         <svg id="svg_chart"></svg>
-        <div id="svg_scatter_plot"></div>
     </div>
 
     
 </div>
 
 
+<div id="svg_line_plot" class="svg_line_plot"></div>
 
 <script>
     let data = {{ data | safe }};
@@ -46,9 +44,10 @@
 
 <script src="../static/js/pca.js"></script>
 <script src="../static/js/heatmap.js"></script>
+<script src="../static/js/lineplot.js"></script>
 
 
-<div id="svg_line_plot" class="svg_line_plot"></div>
+
 
 </body>
 </html>
