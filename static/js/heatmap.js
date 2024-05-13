@@ -45,7 +45,7 @@ var heatmapVars = svg.select("#yTicks").selectAll(".tick text")
     .style("font-size", 15);
 
 var color = d3.scaleSequential()
-    .interpolator(d3.interpolateInferno)
+    .interpolator(d3.interpolateViridis)
     .domain([d3.min(data[1], d => d.values), d3.max(data[1], d => d.values)]);
 
 svg.selectAll()
