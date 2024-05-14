@@ -48,7 +48,8 @@ svgPCA.append('g')
         document.dispatchEvent(customEvent);
     })
     .on("click", (event, d) => {
-
+        var customEvent = new CustomEvent("teamClicked", { detail: d["Team Name"] });
+        document.dispatchEvent(customEvent);
     });
 
 var highlight = svgPCA.append('circle')
