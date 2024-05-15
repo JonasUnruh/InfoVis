@@ -1,4 +1,4 @@
-var margin = ({top: 30, right: 30, bottom: 60, left: 30});
+var margin = ({top: 30, right: 30, bottom: 60, left: 50});
 var width = 1000;
 var height = 600;
 
@@ -43,9 +43,9 @@ var xAxis = d3.scaleLinear()
     .range([ margin.left , width - margin.right]);
 var gXAxis = svgLine.append("g")
     .attr("transform", `translate(0, ${height - margin.bottom})`)
-    .call(d3.axisBottom(xAxis));
+    .call(d3.axisBottom(xAxis)
+    .tickFormat(d3.format("")));
 
-console.log(teamData)
 
 // add y axis
 var yAxis = d3.scaleLinear()
@@ -67,6 +67,7 @@ var line = svgLine
       .attr("stroke", "steelblue")
       .style("stroke-width", 4)
       .style("fill", "none")
+      .text(d => d3.format("d")(d))
 
 //function to update the chart
 var update = (selectedOption) => {
@@ -93,10 +94,11 @@ var update = (selectedOption) => {
         .attr("d", d3.line()
             .x(d => xAxis(d.season))
             .y(d => yAxis(d.option)))
+        .text(d => d3.format("d")(d))
 }
 
 // define option as global variable
-var option = "height"
+var option = "nr_players"
 
 // call update on dropdown change
 var changeIndicator = (d) => {
@@ -113,6 +115,8 @@ document.addEventListener("teamClicked", (event) => {
     var clickedData = event.detail;
     
     teamData = data[2].filter(d => d["team_name"] === clickedData)
+
+    d3.select("#svg_line_plot").style("opacity", 1)
 
     update(option)
 });

@@ -50,9 +50,24 @@ svgPCA.append('g')
     .on("click", (event, d) => {
         var customEvent = new CustomEvent("teamClicked", { detail: d["Team Name"] });
         document.dispatchEvent(customEvent);
+
+        highlightClicked
+            .attr("cx", xScale(d.X1))
+            .attr("cy", yScale(d.X2))
+            .attr("opacity", 1);
     });
 
 var highlight = svgPCA.append('circle')
+                    .attr("id", "highlightScatter")
+                    .attr("cx", xScale(0) )
+                    .attr("cy", yScale(0) )
+                    .attr("r", 5)
+                    .attr("fill", "none")
+                    .attr("opacity", 0)
+                    .attr("stroke", 'red')
+                    .attr("stroke-width", 2);
+
+var highlightClicked = svgPCA.append('circle')
                     .attr("id", "highlightScatter")
                     .attr("cx", xScale(0) )
                     .attr("cy", yScale(0) )

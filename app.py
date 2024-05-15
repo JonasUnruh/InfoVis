@@ -55,8 +55,10 @@ def data():
                "orb", "drb", "trb", "ast", "stl", "blk", "tov", "pf", "pts"]
     cleaned_df_player_stats["season"] = cleaned_df_player_stats["season"].str.split("-").str[0].astype(int)
     aggregate_df = cleaned_df_player_stats[cleaned_df_player_stats["team_name"] != "retired"][targets].groupby(["season", "team_name"]).mean()
-    aggregate_df.insert(0, "nr_players", df_agg_team["Number of Players"])
-    aggregate_df.insert(3, "nr_birthplaces", df_agg_team["Number of Birth Places"])
+    nr_players = cleaned_df_player_stats[cleaned_df_player_stats["team_name"] != "retired"].groupby(["season", "team_name"])["player_id"].count()
+    nr_birthplaces = cleaned_df_player_stats[cleaned_df_player_stats["team_name"] != "retired"].groupby(["season", "team_name"])["birth_date"].count()
+    aggregate_df.insert(0, "nr_players", nr_players)
+    aggregate_df.insert(3, "nr_birthplaces", nr_birthplaces)
 
     aggregate_json = json.loads(aggregate_df.reset_index(names = ["season", "team_name"]).to_json(orient = "records"))
 

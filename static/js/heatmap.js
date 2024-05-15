@@ -1,4 +1,4 @@
-var margin = ({top: 30, right: 30, bottom: 60, left: 150});
+var margin = ({top: 30, right: 30, bottom: 80, left: 170});
 var width = 750;
 var height = 600;
 
@@ -142,6 +142,20 @@ var highlightHeatmapY = svg.append('rect')
     .attr("stroke", 'red')
     .attr("stroke-width", 2);
 
+var highlightHeatmapSelected = svg.append('rect')
+    .attr("id", "highlightHeatmapX")
+    .attr("width", x.bandwidth())
+    .attr("height", height - margin.top - margin.bottom)
+    .attr("transform", `translate(0, ${margin.top})`)
+    .attr("x", 0)
+    .attr("y", 0)
+    .attr("rx", 4)
+    .attr("ry", 4)
+    .attr("opacity", 0)
+    .attr("fill", "none")
+    .attr("stroke", 'red')
+    .attr("stroke-width", 2);
+
 document.addEventListener("scatterplotHovered", (event) => {
     var hoveredData = event.detail;
 
@@ -153,4 +167,12 @@ document.addEventListener("scatterplotHovered", (event) => {
 document.addEventListener("noHover", (event) => {
     highlightHeatmapX
         .attr("opacity", 0)
+});
+
+document.addEventListener("teamClicked", (event) => {
+    var hoveredData = event.detail;
+
+    highlightHeatmapSelected
+        .attr("x", x(hoveredData))
+        .attr("opacity", 1)
 });
