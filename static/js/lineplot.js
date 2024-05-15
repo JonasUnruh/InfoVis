@@ -8,7 +8,7 @@ var svgLine = d3.select("#svg_line_plot")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
     .append("g")
-        .attr("transfrom", `translate(${margin.left}, ${margin.top})`);
+        .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
 // create team data
 var teamData = data[2].filter(d => d["team_name"] === "Atlanta Hawks")
@@ -39,12 +39,12 @@ feature.enter()
 
 // add x axis
 var xAxis = d3.scaleLinear()
-    .domain( d3.extent(teamData, d => d.season) )
+    .domain( d3.extent(teamData, d => +d.season) )
     .range([ margin.left , width - margin.right]);
 var gXAxis = svgLine.append("g")
     .attr("transform", `translate(0, ${height - margin.bottom})`)
     .call(d3.axisBottom(xAxis)
-    .tickFormat(d3.format("")));
+    .tickFormat(d3.format("d")));
 
 
 // add y axis
@@ -67,7 +67,15 @@ var line = svgLine
       .attr("stroke", "steelblue")
       .style("stroke-width", 4)
       .style("fill", "none")
-      .text(d => d3.format("d")(d))
+
+
+// add title
+var title = svgLine.append("text")
+    .attr("x", (width / 2))             
+    .attr("y", 0 - (margin.top / 2))
+    .attr("text-anchor", "middle")  
+    .style("font-size", "16px") 
+    .text(`${teamData[0].team_name} ${option}`);
 
 //function to update the chart
 var update = (selectedOption) => {
@@ -75,26 +83,49 @@ var update = (selectedOption) => {
     // get the selected data
     var filteredData = teamData.map(d => {return {season: d.season, option: d[selectedOption]}})
     
+    // update title
+    title.text(`${teamData[0].team_name} average ${displayNames[option]}`)
+
     // update xAxis domain
     xAxis.domain( d3.extent(filteredData, d => d.season) )
 
     gXAxis.transition().duration(1000)
-        .call(d3.axisBottom(xAxis));
+        .call(d3.axisBottom(xAxis)
+        .tickFormat(d3.format("d")));
 
+    console.log(selectedOption)
     // update yAxis domain
-    yAxis.domain( [0, d3.max(filteredData, d => d.option)])
+    if(["fgp", "fg2p", "fg3p"].includes(selectedOption)){
+        console.log("%")
+        yAxis.domain( [0, d3.max(filteredData, d => d.option) * 100])
 
-    gYAxis.transition().duration(1000)
-        .call(d3.axisLeft(yAxis));
+        gYAxis.transition().duration(1000)
+            .call(d3.axisLeft(yAxis).tickFormat(d => d + "%"));
 
-    // update the line with new data
-    line
+        // update the line with new data
+        line
+        .datum(filteredData)
+        .transition().duration(1000)
+        .attr("d", d3.line()
+            .x(d => xAxis(d.season))
+            .y(d => yAxis(d.option * 100)))
+
+    } else {
+        yAxis.domain( [0, d3.max(filteredData, d => d.option)])
+
+        gYAxis.transition().duration(1000)
+            .call(d3.axisLeft(yAxis));
+
+            // update the line with new data
+        line
         .datum(filteredData)
         .transition().duration(1000)
         .attr("d", d3.line()
             .x(d => xAxis(d.season))
             .y(d => yAxis(d.option)))
-        .text(d => d3.format("d")(d))
+    }
+    
+    
 }
 
 // define option as global variable
@@ -109,6 +140,7 @@ var changeIndicator = (d) => {
     // run update
     update(option)
 }
+
 
 // add event listener for team change
 document.addEventListener("teamClicked", (event) => {
